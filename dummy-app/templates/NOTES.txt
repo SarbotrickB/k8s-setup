@@ -1,0 +1,62 @@
+NOTES.txt
+
+Thank you for installing {{ .Chart.Name }}!
+
+Your application is now running in the Kubernetes cluster.
+
+To access your application, follow these steps:
+
+1. **Get the application URL by running these commands:**
+
+{{- if .Values.ingress.enabled }}
+  {{- range .Values.ingress.hosts }}
+  {{- if . }}
+  export INGRESS_HOST={{ .host }}
+  echo "Visit http://${INGRESS_HOST} to access your application"
+  {{- end }}
+  {{- end }}
+{{- else if eq .Values.service.type "LoadBalancer" }}
+  export SERVICE_IP=$(kubectl get svc --namespace {{ .Release.Namespace }} -l "app.kubernetes.io/name={{ include "dummy-app.name" . }},app.kubernetes.io/instance={{ .Release.Name }}" -o jsonpath='{.items[0].status.loadBalancer.ingress[0].ip}')
+  echo "Visit http://${SERVICE_IP} to access your application"
+{{- else if eq .Values.service.type "NodePort" }}
+  export NODE_PORT=$(kubectl get --namespace {{ .Release.Namespace }} -o jsonpath="{.spec.ports[0].nodePort}" services {{ include "dummy-app.fullname" . }})
+  export NODE_IP=$(kubectl get nodes --namespace {{ .Release.Namespace }} -o jsonpath="{.items[0].status.addresses[0].address}")
+  echo "Visit http://${NODE_IP}:${NODE_PORT} to access your application"
+{{- else }}
+  echo "To access your application, use the 'kubectl port-forward' command:"
+  echo "  kubectl port-forward svc/{{ include "dummy-app.fullname" . }} 8080:{{ .Values.service.port }}"
+  echo "Then open your browser at http://127.0.0.1:8080"
+{{- end }}
+
+2. **Get more details about your deployment:**
+
+kubectl get all -l app.kubernetes.io/name={{ include "dummy-app.name" . }},app.kubernetes.io/instance={{ .Release.Name }}
+
+
+3. **Check the logs of your application:**
+
+kubectl logs -l app.kubernetes.io/name={{ include "dummy-app.name" . }},app.kubernetes.io/instance={{ .Release.Name }}
+
+
+4. **Scaling your application:**
+
+You can scale your application by running:
+
+kubectl scale deployment {{ include "dummy-app.fullname" . }} --replicas=<desired_replica_count>
+
+
+5. **Uninstalling the Chart:**
+
+If you want to uninstall the chart, run:
+
+helm uninstall {{ .Release.Name }}
+
+
+6. **Future Work:**
+
+- Integrate GPU Workloads: Extend the current setup to deploy containers using GPUs for creating embeddings.
+- Performance Optimization: Monitor the application's performance and optimize resource allocation.
+- Security Enhancements: Implement network policies and role-based access control (RBAC) for enhanced security.
+
+For more information, visit the Helm documentation: https://helm.sh/docs/
+
