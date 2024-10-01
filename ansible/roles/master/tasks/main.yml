@@ -1,0 +1,22 @@
+---
+- name: Initialize the Kubernetes cluster
+  command: kubeadm init --pod-network-cidr=10.244.0.0/16
+
+- name: Create .kube directory
+  file:
+    path: /root/.kube
+    state: directory
+    mode: 0700
+
+- name: Copy Kubernetes admin config
+  command: cp /etc/kubernetes/admin.conf /root/.kube/config
+
+- name: Set ownership of Kubernetes admin config
+  file:
+    path: /root/.kube/config
+    owner: root
+    group: root
+    mode: 0600
+
+- name: Install Flannel network plugin
+  command: kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
