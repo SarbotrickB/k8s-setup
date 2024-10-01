@@ -194,3 +194,25 @@ docker push <registry_name>/legal-docs-frontend:latest
 docker push <registry_name>/legal-docs-backend:latest
 ```
 Then we can `Update our Helm chart` to deploy the actual application instead of the dummy application.
+
+##  Integrate local GPU-enabled machines
+
+#### Install GPU Drivers
+Ensure that the GPU drivers (e.g., NVIDIA drivers) are installed on the nodes that will be used for GPU workloads. GPU drivers make it possible for our system and software to use the GPU for accelerating tasks.
+####  Install NVIDIA Docker Runtime
+Install the NVIDIA Docker runtime on these nodes to enable Docker to use the GPUs.
+#### Configure Kubernetes for GPUs
+Install the NVIDIA device plugin for Kubernetes, which allows Kubernetes to manage GPU resources.
+####  Modify Helm Charts for GPU Support
+Update your Helm chart to include GPU resource requests and limits in the `values.yaml` and `deployment.yaml`
+#### Update Ansible Playbooks
+Ensure that the Ansible playbooks are updated to install GPU drivers, NVIDIA Docker runtime, and configure Kubernetes nodes to use GPUs.
+#### Deploying the Application
+Deploy the updated Helm chart to our Kubernetes cluster. The pods should now be scheduled on GPU-enabled nodes and have access to GPU resources.
+#### Test GPU Utilization 
+Deploy a simple GPU workload (e.g., TensorFlow or PyTorch job) to verify that the GPUs are being utilized.
+#### Monitor Resource Usage
+Use Kubernetes dashboards or monitoring tools like Prometheus and Grafana to monitor GPU resource usage and performance.
+
+### Conclusion
+By following these steps, we can extend your Kubernetes architecture to integrate local GPU-enabled machines, enabling efficient and scalable deployment of GPU workloads for creating document embeddings. This setup will support the web application in comparing the similarity of legal documents, leveraging the power of GPUs to handle the computationally intensive tasks involved.
