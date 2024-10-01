@@ -121,6 +121,11 @@ Run the Helm test to verify that the service is accessible.
 ```
 helm test myapp
 ```
+#### Uninstall the Helm Chart
+If you want to uninstall the Helm chart, use the
+```
+helm uninstall
+```
 #### Future Work
 Integrate GPU Workloads: Extend the current setup to deploy containers using GPUs for creating embeddings.
 Performance Optimization: Monitor the application's performance and optimize resource allocation.
