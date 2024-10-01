@@ -1,3 +1,7 @@
+#This is a sample file that demonstrates how we might create a web application to upload documents, generate embeddings using a pre-trained model, and calculate cosine similarity. 
+#This example uses Flask for the web framework and a pre-trained model from Hugging Face's transformers library for generating embeddings.
+# We can create a docker image to do this task, and deploy this application
+
 from flask import Flask, request, jsonify
 from transformers import AutoTokenizer, AutoModel
 import torch
