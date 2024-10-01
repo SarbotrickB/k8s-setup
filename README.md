@@ -130,3 +130,67 @@ helm uninstall
 Integrate GPU Workloads: Extend the current setup to deploy containers using GPUs for creating embeddings.
 Performance Optimization: Monitor the application's performance and optimize resource allocation.
 Security Enhancements: Implement network policies and role-based access control (RBAC) for enhanced security.
+
+## Testing the Setup
+To verify the setup, we can:
+1)Check the status of the Kubernetes cluster.
+2)Ensure that the dummy application is running.
+3)Replace the dummy application with the actual application and test the functionality of comparing legal document similarities.
+
+## Developing the Actual Application:
+To develop the actual application that will compare the similarity of legal documents, the application should include:
+1)A web frontend for users to upload documents.
+2)A backend service that processes the uploaded documents, generates embeddings using a third-party API (like OpenAI), and computes cosine similarity between the base document and other documents.
+
+Lets assume we have the following componets:
+#### Frontend: 
+A simple web interface to upload documents.
+#### Backend: 
+A service that handles document uploads, calls the embedding API, and computes similarities.
+
+The we can `Containerize the Application`:
+Create Dockerfiles for both the frontend and backend services:
+For eg:
+```
+#frontend/Dockerfile
+
+FROM node:14
+
+WORKDIR /app
+
+COPY package*.json ./
+RUN npm install
+
+COPY . .
+
+EXPOSE 3000
+CMD ["npm", "start"]
+```
+```
+#backend/Dockerfile
+
+FROM python:3.8
+
+WORKDIR /app
+
+COPY requirements.txt ./
+RUN pip install -r requirements.txt
+
+COPY . .
+
+EXPOSE 5000
+CMD ["python", "app.py"]
+```
+Then we will `Build and Push Docker Images`:
+```
+# Build frontend image
+docker build -t <registry_name>/legal-docs-frontend:latest -f frontend/Dockerfile frontend/
+
+# Build backend image
+docker build -t <registry_name>/legal-docs-backend:latest -f backend/Dockerfile backend/
+
+# Push images to registry
+docker push <registry_name>/legal-docs-frontend:latest
+docker push <registry_name>/legal-docs-backend:latest
+```
+Then we can `Update our Helm chart` to deploy the actual application instead of the dummy application.
