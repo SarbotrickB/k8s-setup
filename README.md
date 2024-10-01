@@ -73,7 +73,7 @@ Contains metadata about the Helm chart, such as the name, version, and descripti
 Defines the default values for the Helm chart. These values can be overridden by users during the installation process. It includes configurations for replica count, image details, service type, ingress settings, resource limits, and autoscaling.
 
 #### templates/deployment.yaml:
-Defines the Kubernetes Deployment resource. This file specifies the deployment configuration for the web application, including the number of replicas, container image, ports, probes, and resource limits.
+Defines the Kubernetes Deployment of the dummy application. This file specifies the deployment configuration for the web application, including the number of replicas, container image, ports, probes, and resource limits.
 
 #### templates/service.yaml:
 Defines the Kubernetes Service resource. This file specifies the configuration for exposing the web application internally within the cluster.
