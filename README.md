@@ -1,5 +1,5 @@
 # k8s-setup
-Technical Assessment
+Technical Assessment to set up a Kubernetes cluster using Ansible and Helm for an application that compares the similarity of legal documents uploaded by the user.
 
 # Kubernetes Cluster Setup and Document Similarity Web Application
 
