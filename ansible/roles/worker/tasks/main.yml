@@ -1,0 +1,3 @@
+---
+- name: Join the Kubernetes cluster
+  command: "{{ hostvars['master'].kubeadm_join_command }}"
